@@ -1,0 +1,37 @@
+<IfModule mod_rewrite.c>
+<IfModule mod_negotiation.c>
+Options -MultiViews
+</IfModule>
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ ^$1 [N]
+
+RewriteCond %{REQUEST_URI} (\.\w+$) [NC]
+RewriteRule ^(.*)$ public/$1
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ server.php
+
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+Header always set X-XSS-Protection "1; mode=block"
+Header set X-Content-Type-Options nosniff
+Header set Cache-Control "no-cache, no-store, must-revalidate"
+Header set Pragma "no-cache"
+Header set Expires 0
+RequestHeader set X-HTTPS 1
+Header set Content-Security-Policy "script-src 'self' 'unsafe-eval' maps.googleapis.com www.google.com www.gstatic.com 'unsafe-inline'; style-src 'self' 'unsafe-inline' fonts.googleapis.com use.fontawesome.com; img-src raw.githubusercontent.com *.amazonaws.com maps.googleapis.com maps.gstatic.com data: 'self';"
+Header add Access-Control-Allow-Methods "HEAD, GET, POST, PUT, PATCH, DELETE"
+# Header set Access-Control-Allow-Origin "*"
+Header always set Permissions-Policy "geolocation=()"
+Header always set X-Frame-Options "DENY"
+Header always set Referrer-Policy "strict-origin-when-cross-origin" 
+Header add Access-Control-Expose-Headers "Authorization, X-Pagination-Total-Pages, X-Pagination-Current-Page, X-Pagination-Page-Limit, X-Pagination-Total-Items, Content-Type, content-type"
+</IfModule>
