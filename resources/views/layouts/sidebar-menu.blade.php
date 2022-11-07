@@ -15,6 +15,13 @@
 				</a>
 			</li>
 			@endif
+			@if(config("roles.".Session::get('user_role').".chain_management"))
+			<li class="{{ Request::is('chain-list') ? 'active' : '' }} {{ Request::is('create-chain') ? 'active' : '' }} {{ Request::is('edit-chain/*') ? 'active' : '' }} {{ Request::is('view-chain/*') ? 'active' : '' }}">
+				<a href="{!! url(route('chain-list')) !!}">
+					<i class="fa fa-calendar"></i> <span>Chain Management</span>
+				</a>
+			</li>
+			@endif
 			@if(config("roles.".Session::get('user_role').".user_management"))
 			<li class="{{ Request::is('user-list') ? 'active' : '' }} {{ Request::is('create-user') ? 'active' : '' }} {{ Request::is('edit-user/*') ? 'active' : '' }} {{ Request::is('view-user/*') ? 'active' : '' }} {{ Request::is('change-password/*') ? 'active' : '' }}">
 				<a href="{!! url(route('user-list')) !!}">
